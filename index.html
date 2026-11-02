@@ -1,0 +1,106 @@
+<title>Лабораторні роботи 7 клас</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Nunito:wght@700;800;900&display=swap">
+<style>
+/* Layout: full-screen game lobby — the poster image is the world, lab buttons sit in a glass panel in the clear sky under the title. Single bright look by design. */
+:root{
+  color-scheme: light;
+  --sky:#2F6FD6;          /* fallback behind the image */
+  --ink:#1B1440;          /* outlines, text on gold */
+  --gold:#FFC93C;         /* button face */
+  --gold-deep:#E89A10;    /* button base / pressed edge */
+  --violet:#7B3FE4;       /* number badge, accents */
+  --glass:rgba(20,16,60,.42);
+  --white:#FFFFFF;
+  --f-display:"Russo One","Arial Black",Impact,sans-serif;
+  --f-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+html,body{height:100%}
+body{
+  background:var(--sky) url("adr45hfj.png") center 0 / cover no-repeat fixed;
+  color:var(--white);font-family:var(--f-body);
+}
+.stage{
+  min-height:100%;box-sizing:border-box;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:clamp(150px, 31vh, 340px) 32px;
+}
+.panel{
+  width:100%;max-width:640px;box-sizing:border-box;
+  background:var(--glass);
+  -webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);
+  border:2px solid rgba(255,255,255,.35);border-radius:22px;
+  padding:18px 18px 20px;
+  box-shadow:0 18px 40px rgba(10,8,40,.35);
+}
+.panel h2{
+  margin:0 0 14px;text-align:center;font:400 clamp(17px,2.4vw,22px)/1.2 var(--f-display);
+  letter-spacing:.04em;text-transform:uppercase;text-shadow:0 2px 0 var(--ink);
+}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.lab{
+  position:relative;display:flex;align-items:center;gap:14px;min-width:0;
+  padding:14px 16px 16px;border-radius:18px;text-decoration:none;color:var(--ink);
+  background:linear-gradient(180deg,#FFE27A 0%,var(--gold) 55%,#FFB72B 100%);
+  border:3px solid var(--ink);
+  box-shadow:0 6px 0 var(--gold-deep),0 6px 0 3px var(--ink),0 14px 22px rgba(0,0,0,.35);
+  transition:transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+.lab:hover{transform:translateY(-3px) rotate(-.6deg);filter:brightness(1.05)}
+.lab:active{transform:translateY(5px);box-shadow:0 1px 0 var(--gold-deep),0 1px 0 3px var(--ink),0 4px 8px rgba(0,0,0,.3)}
+.lab:focus-visible{outline:4px solid var(--white);outline-offset:4px}
+.num{
+  flex:none;width:58px;height:58px;border-radius:14px;display:grid;place-items:center;
+  background:var(--violet);color:var(--white);border:3px solid var(--ink);
+  font:400 28px/1 var(--f-display);text-shadow:0 2px 0 var(--ink);
+  box-shadow:inset 0 -4px 0 rgba(0,0,0,.25);
+}
+.txt{min-width:0;display:flex;flex-direction:column;gap:2px}
+.kicker{font:900 12px/1.2 var(--f-body);letter-spacing:.1em;text-transform:uppercase;opacity:.75}
+.name{font:400 clamp(17px,2.1vw,20px)/1.15 var(--f-display);text-wrap:balance}
+.go{
+  margin-left:auto;flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  background:var(--ink);color:var(--gold);font:400 20px/1 var(--f-display);
+}
+.note{margin:14px 0 0;text-align:center;font-size:13px;font-weight:700;opacity:.9}
+@media (max-width:560px){
+  body{background-position:center 0;background-attachment:scroll}
+  .stage{padding-block:clamp(120px, 26vh, 220px) 24px}
+}
+@media (prefers-reduced-motion:reduce){.lab{transition:none}.lab:hover{transform:none}}
+</style>
+
+<main class="stage">
+  <section class="panel" aria-labelledby="pick">
+    <h2 id="pick">Обери лабораторну</h2>
+    <nav class="grid" id="labs"></nav>
+    <p class="note">Натисни на кнопку, щоб відкрити роботу</p>
+  </section>
+</main>
+
+<script>
+/* Щоб додати нову лабораторну, допишіть рядок у цей список
+   і покладіть файл поруч із цією сторінкою. */
+const LABS = [
+  { file: "Lab 1.html", title: "Королівство Дрібноцарство" },
+  { file: "Lab 2.html", title: "Скейт-лаба" },
+];
+
+const box = document.getElementById("labs");
+LABS.forEach((lab, i) => {
+  const a = document.createElement("a");
+  a.className = "lab";
+  a.href = encodeURI(lab.file);
+  a.innerHTML =
+    '<span class="num">' + (i + 1) + '</span>' +
+    '<span class="txt"><span class="kicker">Лабораторна № ' + (i + 1) + '</span>' +
+    '<span class="name"></span></span>' +
+    '<span class="go" aria-hidden="true">▶</span>';
+  a.querySelector(".name").textContent = lab.title;
+  box.appendChild(a);
+});
+</script>
